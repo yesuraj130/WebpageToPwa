@@ -3,7 +3,9 @@
 <head>
 <title>HJM Mixer</title>
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <link rel="manifest" href="./manifest.json" crossorigin="use-credentials">
 
@@ -18,12 +20,16 @@
   }
   body {
     display: grid;
-    grid-template-rows: 100vh;
-    grid-template-columns: 100vw;
+    grid-template-rows: 100%;
+    grid-template-columns: 100%;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
   }
   #mixerFrame {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     border: none;
     margin: 0;
     padding: 0;
@@ -42,15 +48,14 @@ if ('serviceWorker' in navigator) {
 
 let currentScale = 1;
 function openFullscreen(){
+   var elem = document.documentElement;
    if (!document.fullscreenElement)
    {
-      var elem = document.documentElement;
-      if (elem.requestFullscreen)
-      {
-          elem.requestFullscreen().catch(() => {});
-          if (screen.orientation && screen.orientation.lock) {
-              screen.orientation.lock('landscape').catch(() => {});
-          }
+      const req = elem.requestFullscreen ? elem.requestFullscreen({ navigationUI: "hide" }) :
+                  elem.webkitRequestFullscreen ? elem.webkitRequestFullscreen() : null;
+      if (req && req.catch) req.catch(() => {});
+      if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
       }
    }
    else
@@ -60,6 +65,25 @@ function openFullscreen(){
       }
    }
 }
+
+// Attempt fullscreen automatically on load
+window.addEventListener('load', () => {
+  openFullscreen();
+});
+document.addEventListener('DOMContentLoaded', () => {
+  openFullscreen();
+});
+
+// Auto-expand fullscreen on first user tap anywhere
+function autoFullscreenOnInteraction(){
+  if (!document.fullscreenElement) {
+    openFullscreen();
+  }
+}
+['pointerdown', 'touchstart', 'click'].forEach(evt => {
+  window.addEventListener(evt, autoFullscreenOnInteraction, { passive: true });
+  document.addEventListener(evt, autoFullscreenOnInteraction, { passive: true });
+});
 
 function decreaseScale(){
     var elem = document.documentElement;
@@ -131,6 +155,19 @@ window.addEventListener('DOMContentLoaded', () => {
       clearTimeout(timeoutId);
       setMixerSource(DEMO_MIXER_URL);
     });
+
+  const frame = document.getElementById('mixerFrame');
+  if (frame) {
+    frame.addEventListener('load', () => {
+      try {
+        if (frame.contentWindow) {
+          ['pointerdown', 'touchstart', 'click'].forEach(evt => {
+            frame.contentWindow.addEventListener(evt, autoFullscreenOnInteraction, { passive: true });
+          });
+        }
+      } catch (e) {}
+    });
+  }
 });
 </script>
 </head>
