@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+bun.lock
+package-lock.json
+
+# Local Environment
+.env
+.env.local
+.env.example
+
+# AI Studio runtime files
+metadata.json
+server.js
+package.json
