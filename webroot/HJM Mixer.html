@@ -1,0 +1,78 @@
+<html>
+<title>HJM Mixer</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="/manifest.json">
+
+<script>
+
+let currentScale = 1;
+function openFullscreen()
+{
+   if (!document.fullscreenElement)
+   {
+      var elem = document.documentElement;
+
+      if (elem.requestFullscreen)
+      {
+          elem.requestFullscreen();
+		  screen.orientation.lock('landscape');
+      }
+   }
+   {
+      document.exitFullscreen(); 
+//      document.getElementById('rotateButton').style.display = 'inline-block';
+   }
+}
+
+function decreaseScale()
+{
+    var elem = document.documentElement;
+	currentScale = currentScale - 0.1;
+	elem.style.scale = currentScale;
+}
+
+function increaseScale()
+{
+    var elem = document.documentElement;
+	currentScale = currentScale + 0.1;
+	elem.style.scale = currentScale;
+	
+}
+//function lockLandscape()
+//{
+//    var elem = document.documentElement;
+//    if (elem.requestFullscreen)
+//    {
+//       elem.requestFullscreen();
+//    }
+//    screen.orientation.lock('landscape');
+//    document.getElementById('rotateButton').style.display = 'none';
+//}
+</script>
+<body style="border:none; margin:0; display: grid; ">
+  
+<iframe src="http://192.168.0.120/mixer.html" style="height:100%; width:100%; border:none; margin:0; grid-row:1; grid-column:1; ">
+</iframe>
+
+<div style="grid-row:1; grid-column:1; height:30; width:85; margin-left: auto; margin-right: 20%; margin-top:7; ">
+
+	<button style="height:24; width:24; padding:0; " onclick="openFullscreen()">
+		<svg style="margin:0; padding:0; " viewBox="0 0 24 24">
+			<path style="margin:0; padding:0; " d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+		</svg>
+	</button>
+
+	<!-- <button style="height:24; width:24; padding:0; " onclick="decreaseScale()">-</button> -->
+
+	<!-- <button style="height:24; width:24; padding:0; " onclick="increaseScale()">+</button> -->
+	<!-- <button id="rotateButton" style="height:24; width:24; padding:0;  display:inline-block; " onclick="lockLandscape()">
+	<svg style="margin:0; padding:0; " viewBox="0 0 16 16">
+		<path style="margin:0; padding:0; " d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+	  </svg>
+	</button> -->
+
+</div>
+
+</body>
+</html>
