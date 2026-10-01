@@ -3,7 +3,7 @@
   "name": "HJM Mixer",
   "short_name": "HJM Mixer",
   "description": "Soundcraft Ui24 digital mixer web console",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "fullscreen",
   "display_override": [
